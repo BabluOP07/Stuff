@@ -1,0 +1,30 @@
+ 
+# Load necessary libraries
+install.packages("e1071")  # Uncomment this line if you haven't installed the package
+library(e1071)
+
+# Load the Iris dataset
+data(iris)
+
+# Set seed for reproducibility
+set.seed(42)
+
+# Split the dataset into training and testing sets (70% train, 30% test)
+sample_index <- sample(1:nrow(iris), 0.7 * nrow(iris))
+train_data <- iris[sample_index, ]
+test_data <- iris[-sample_index, ]
+
+# Train the Naive Bayes model
+nb_model <- naiveBayes(Species ~ ., data = train_data)
+
+# Make predictions on the test set
+predictions <- predict(nb_model, test_data)
+
+# Evaluate the model
+confusion_matrix <- table(test_data$Species, predictions)
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+
+# Print the results
+print(paste("Accuracy:", round(accuracy, 2)))
+print("Confusion Matrix:")
+print(confusion_matrix)
